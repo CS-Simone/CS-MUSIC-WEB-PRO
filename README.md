@@ -6,4 +6,5 @@ This is a rewritten version of @PixelatedPurple 's Music-Prod thats currently in
 This is intellectual property of CS-Simone, All rights reserved by there respective authors.<br>
 If you use my code, give me credit thats all i ask.
 
-# Installation
+Edit: Dont forget me either - PixelatedPurple
+
