@@ -55,6 +55,13 @@
     });
   }
 
+  async function checkAuth() {
+    const response = await fetch('/api/check-auth');
+    if (response.status !== 200) {
+      window.location.href = '/login';
+    }
+  }
+
   document.getElementById('album-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -76,7 +83,10 @@
     alert('Song uploaded successfully!');
   });
 
-  window.onload = loadAlbumsForDropdown;
+  window.onload = function() {
+    checkAuth();
+    loadAlbumsForDropdown();
+  };
 </script>
 
 </body>
