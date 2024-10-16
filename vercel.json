@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     { "src": "api/albums.js", "use": "@vercel/node" },
     { "src": "api/audio.js", "use": "@vercel/node" },
