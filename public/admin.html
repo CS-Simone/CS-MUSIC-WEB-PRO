@@ -44,7 +44,7 @@
 
 <script>
   async function loadAlbumsForDropdown() {
-    const response = await fetch('/api/albums.js');
+    const response = await fetch('/api/albums');
     const albums = await response.json();
     const dropdown = document.getElementById('album-dropdown');
     
