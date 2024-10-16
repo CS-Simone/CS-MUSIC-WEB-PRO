@@ -8,17 +8,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const enteredUsername = document.getElementById("username").value;
     const enteredPassword = document.getElementById("password").value;
 
-    // Hardcoded credentials for demonstration (replace with your method)
-    const correctUsername = "DemoUser"; // Replace with env variable
-    const correctPassword = "Demo123"; // Replace with env variable
+    // Fetch the user data from users.json
+    fetch('users.json')
+      .then(response => response.json())
+      .then(data => {
+        const user = data.users.find(user => user.username === enteredUsername && user.password === enteredPassword);
 
-    if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
-      // Store authentication state
-      localStorage.setItem("isAuthenticated", "true");
-      window.location.href = "/admin.html";
-    } else {
-      errorMessage.textContent = "Invalid username or password. Please try again.";
-      errorMessage.style.display = "block";
-    }
+        if (user) {
+          // Store authentication state
+          localStorage.setItem("isAuthenticated", "true");
+          window.location.href = "/admin.html";
+        } else {
+          errorMessage.textContent = "Invalid username or password. Please try again.";
+          errorMessage.style.display = "block";
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+        errorMessage.textContent = "An error occurred. Please try again later.";
+        errorMessage.style.display = "block";
+      });
   });
 });
