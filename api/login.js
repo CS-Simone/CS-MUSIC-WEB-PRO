@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const enteredPassword = document.getElementById("password").value;
 
     // Hardcoded credentials for demonstration (replace with your method)
-    const correctUsername = "your_username"; // Replace with env variable
-    const correctPassword = "your_password"; // Replace with env variable
+    const correctUsername = "DemoUser"; // Replace with env variable
+    const correctPassword = "Demo123"; // Replace with env variable
 
     if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
       // Store authentication state
