@@ -1,28 +1,25 @@
 const connectToDatabase = require('./db');
 const Album = require('../models/AlbumModel');
 const { Readable } = require('stream');
-const auth = require('./auth');
 
 module.exports = async (req, res) => {
   const { gfs } = await connectToDatabase();
 
   if (req.method === 'POST') {
-    auth(req, res, async () => {
-      const { name, releaseDate } = req.body;
-      const coverFile = req.files.coverFile;
+    const { name, releaseDate } = req.body;
+    const coverFile = req.files.coverFile;
 
-      const readStream = new Readable();
-      readStream.push(coverFile.buffer);
-      readStream.push(null);
+    const readStream = new Readable();
+    readStream.push(coverFile.buffer);
+    readStream.push(null);
 
-      const writeStream = gfs.createWriteStream({ filename: coverFile.originalname });
-      readStream.pipe(writeStream);
+    const writeStream = gfs.createWriteStream({ filename: coverFile.originalname });
+    readStream.pipe(writeStream);
 
-      writeStream.on('close', async (file) => {
-        const newAlbum = new Album({ name, releaseDate: new Date(releaseDate), coverFileId: file._id });
-        await newAlbum.save();
-        res.status(200).json({ message: 'Album created!', album: newAlbum });
-      });
+    writeStream.on('close', async (file) => {
+      const newAlbum = new Album({ name, releaseDate: new Date(releaseDate), coverFileId: file._id });
+      await newAlbum.save();
+      res.status(200).json({ message: 'Album created!', album: newAlbum });
     });
   } else if (req.method === 'GET') {
     const albums = await Album.find();
