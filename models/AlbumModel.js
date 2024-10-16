@@ -1,25 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const albumSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  releaseDate: {
-    type: Date,
-    required: true,
-  },
-  coverFileId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+const AlbumSchema = new Schema({
+  name: { type: String, required: true },
+  releaseDate: { type: Date, required: true },
+  coverFileUrl: { type: String, required: true },  // Store the cover image URL here
+  createdAt: { type: Date, default: Date.now }
 });
 
-// Create the Album model from the schema
-const Album = mongoose.model('Album', albumSchema);
-
-module.exports = Album;
+module.exports = mongoose.model('Album', AlbumSchema);
