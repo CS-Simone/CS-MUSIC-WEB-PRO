@@ -1,6 +1,9 @@
 const session = require('express-session');
 const express = require('express');
 const app = express();
+const username = process.env.ADMIN_USERNAME;
+const password = process.env.ADMIN_PASSWORD;
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
