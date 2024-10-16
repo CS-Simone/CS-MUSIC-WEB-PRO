@@ -1,7 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "api/albums.js", "use": "@vercel/node" },
+    { "src": "api/audio.js", "use": "@vercel/node" },
+    { "src": "api/db.js", "use": "@vercel/node" },
+    { "src": "api/login.js", "use": "@vercel/node" },
+    { "src": "api/upload.js", "use": "@vercel/node" },
      { "src": "public/login.html", "use": "@vercel/static" },
     { "src": "public/admin.html", "use": "@vercel/static" },
     { "src": "public/index.html", "use": "@vercel/static" }
