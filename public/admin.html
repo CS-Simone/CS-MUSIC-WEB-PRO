@@ -41,11 +41,16 @@
     <button type="submit">Upload Song</button>
   </form>
 </div>
+
 <script>
   async function loadAlbumsForDropdown() {
     const response = await fetch('/api/albums');
     const albums = await response.json();
     const dropdown = document.getElementById('album-dropdown');
+    
+    // Clear existing options
+    dropdown.innerHTML = '';
+
     albums.forEach(album => {
       const option = document.createElement('option');
       option.value = album._id;
@@ -62,7 +67,7 @@
       body: formData
     });
     alert('Album created successfully!');
-    loadAlbumsForDropdown();
+    loadAlbumsForDropdown(); // Refresh the dropdown after album creation
   });
 
   document.getElementById('song-form').addEventListener('submit', async (event) => {
@@ -76,8 +81,7 @@
   });
 
   window.onload = function() {
-    checkAuth();
-    loadAlbumsForDropdown();
+    loadAlbumsForDropdown(); // Load albums on initial page load
   };
 </script>
 
