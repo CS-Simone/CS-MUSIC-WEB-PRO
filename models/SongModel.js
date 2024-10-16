@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const SongSchema = new mongoose.Schema({
+const SongSchema = new Schema({
   title: { type: String, required: true },
-  authors: [String],
-  releaseDate: { type: Date, required: true },
-  length: { type: Number, required: true },
+  authors: [{ type: String, required: true }],
   album: { type: String, required: true },
-  gridFSFileId: { type: mongoose.Schema.Types.ObjectId, required: true }
+  releaseDate: { type: Date, required: true },
+  length: { type: Number, required: true },  // Length in seconds
+  songFileUrl: { type: String, required: true },  // Store the song file URL here
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.models.Song || mongoose.model('Song', SongSchema);
+module.exports = mongoose.model('Song', SongSchema);
