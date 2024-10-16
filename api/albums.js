@@ -1,31 +1,28 @@
 const connectToDatabase = require('./db');
-const mongoose = require('mongoose');
+const Album = require('../models/AlbumModel');
 const { Readable } = require('stream');
-
-const Album = mongoose.models.Album || mongoose.model('Album', new mongoose.Schema({
-  name: { type: String, required: true },
-  releaseDate: { type: Date, required: true },
-  coverFileId: { type: mongoose.Schema.Types.ObjectId, required: true }
-}));
+const auth = require('./auth');
 
 module.exports = async (req, res) => {
   const { gfs } = await connectToDatabase();
 
   if (req.method === 'POST') {
-    const { name, releaseDate } = req.body;
-    const coverFile = req.files.coverFile;
+    auth(req, res, async () => {
+      const { name, releaseDate } = req.body;
+      const coverFile = req.files.coverFile;
 
-    const readStream = new Readable();
-    readStream.push(coverFile.buffer);
-    readStream.push(null);
+      const readStream = new Readable();
+      readStream.push(coverFile.buffer);
+      readStream.push(null);
 
-    const writeStream = gfs.createWriteStream({ filename: coverFile.originalname });
-    readStream.pipe(writeStream);
+      const writeStream = gfs.createWriteStream({ filename: coverFile.originalname });
+      readStream.pipe(writeStream);
 
-    writeStream.on('close', async (file) => {
-      const newAlbum = new Album({ name, releaseDate: new Date(releaseDate), coverFileId: file._id });
-      await newAlbum.save();
-      res.status(200).json({ message: 'Album created!', album: newAlbum });
+      writeStream.on('close', async (file) => {
+        const newAlbum = new Album({ name, releaseDate: new Date(releaseDate), coverFileId: file._id });
+        await newAlbum.save();
+        res.status(200).json({ message: 'Album created!', album: newAlbum });
+      });
     });
   } else if (req.method === 'GET') {
     const albums = await Album.find();
@@ -34,7 +31,7 @@ module.exports = async (req, res) => {
       let coverBase64 = '';
 
       coverStream.on('data', (chunk) => { coverBase64 += chunk.toString('base64'); });
-      
+
       return new Promise((resolve) => {
         coverStream.on('end', () => resolve({
           name: album.name,
