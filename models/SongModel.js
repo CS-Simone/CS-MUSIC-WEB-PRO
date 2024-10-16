@@ -6,8 +6,9 @@ const SongSchema = new Schema({
   authors: [{ type: String, required: true }],
   album: { type: String, required: true },
   releaseDate: { type: Date, required: true },
-  length: { type: Number, required: true },  // Length in seconds
-  songFileUrl: { type: String, required: true },  // Store the song file URL here
+  length: { type: Number, required: true },
+  songFileData: { type: Buffer, required: true }, // Store file as Buffer data
+  songFileType: { type: String, required: true }, // Store the file type for headers
   createdAt: { type: Date, default: Date.now }
 });
 
