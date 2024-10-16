@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Music Albums</title>
+</head>
+<body>
+
+<div id="captcha-container">
+  <p id="math-problem"></p>
+  <input type="number" id="captcha-answer" placeholder="Enter the answer" required>
+  <button onclick="validateCaptcha()">Submit</button>
+  <p id="captcha-error" style="color: red; display: none;">Incorrect answer, please try again!</p>
+</div>
+
+<div id="main-content" style="display:none;">
+  <header>
+    <h1>Producer's Albums</h1>
+    <p>Contact: producer@example.com | Social Links: <a href="#">Twitter</a>, <a href="#">Instagram</a></p>
+  </header>
+  <div id="album-container"></div>
+</div>
+
+<script>
+  function generateMathCaptcha() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    document.getElementById('math-problem').textContent = `${num1} + ${num2} = ?`;
+    return num1 + num2;
+  }
+
+  let correctAnswer = generateMathCaptcha();
+
+  function validateCaptcha() {
+    const userAnswer = parseInt(document.getElementById('captcha-answer').value, 10);
+    if (userAnswer === correctAnswer) {
+      document.getElementById('captcha-container').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      loadAlbums();
+    } else {
+      document.getElementById('captcha-error').style.display = 'block';
+    }
+  }
+
+  async function loadAlbums() {
+    const response = await fetch('/api/albums');
+    const albums = await response.json();
+    const container = document.getElementById('album-container');
+    container.innerHTML = '';
+
+    albums.forEach(album => {
+      const albumCard = document.createElement('div');
+      albumCard.className = 'album-card';
+
+      const albumInfo = `
+        <img src="${album.coverImage}" alt="Album Cover">
+        <h2>${album.name}</h2>
+        <p>Released: ${new Date(album.releaseDate).toLocaleDateString()}</p>
+        <div class="song-list">
+          <ul>
+            ${album.songs.map(song => `
+              <li>
+                <audio controls>
+                  <source src="/api/audio?id=${song.gridFSFileId}" type="audio/mpeg">
+                </audio>
+                ${song.title} by ${song.authors.join(', ')}
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+
+      albumCard.innerHTML = albumInfo;
+      container.appendChild(albumCard);
+    });
+  }
+</script>
+
+</body>
+</html>
