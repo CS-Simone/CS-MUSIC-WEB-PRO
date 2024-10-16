@@ -1,6 +1,4 @@
 const session = require('express-session');
-const connectToDatabase = require('./db');
-
 const express = require('express');
 const app = express();
 
