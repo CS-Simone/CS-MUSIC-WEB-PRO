@@ -7,3 +7,4 @@ If you use my code, give me credit thats all i ask.
 
 Edit: Dont forget me either - PixelatedPurple
 
+deployed to vercel
