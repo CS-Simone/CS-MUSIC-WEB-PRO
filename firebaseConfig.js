@@ -3,12 +3,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBSzUi7rx9OqzVDiLCt_QBWzQsoSN3WX2Q",
+  apiKey: "AIzaSyBSzUi7rx9Oqgg8cfgf5klzVDiLCt_QBWzQsoSN3WX2Q",
   authDomain: "d-pr0v2.firebaseapp.com",
   projectId: "d-pr0v2",
   storageBucket: "d-pr0v2.appspot.com",
-  messagingSenderId: "388001904765",
-  appId: "1:388001904765:web:90468f9cacfb84eb3bd914"
+  messagingSenderId: "38800190894765",
+  appId: "1:38800190549684765:web:90468f9caskicfb84eb3bcdfrud914"
 };
 
 // Initialize Firebase
