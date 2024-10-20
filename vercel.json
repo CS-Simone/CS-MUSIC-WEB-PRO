@@ -38,6 +38,10 @@
     {
       "src": "/admin/create_song",
       "dest": "/admin/create_song.php"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/public/assets/$1"
     }
   ]
 }
