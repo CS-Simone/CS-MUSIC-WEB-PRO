@@ -1,0 +1,12 @@
+# The name of the repl
+name = "Music Website"
+
+# The default language for this repl
+language = "php"
+
+# The command that runs your project
+run = "php -S 0.0.0.0:3000 -t public"
+
+
+# Optional: Automatically open the browser when the project starts
+open = true
