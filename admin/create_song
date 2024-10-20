@@ -1,0 +1,63 @@
+<?php
+session_start();
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: login.php');
+    exit;
+}
+
+require '../init.php';
+
+// Fetch all albums for the dropdown selection
+$albums = $pdo->query('SELECT * FROM albums')->fetchAll(PDO::FETCH_ASSOC);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'];
+    $author = $_POST['author'];
+    $album_id = $_POST['album_id'];
+    $songFile = $_FILES['song_file']['name'];
+
+    // Save the song file
+    $target_dir = "../public/assets/songs/";
+    $target_file = $target_dir . basename($songFile);
+    move_uploaded_file($_FILES['song_file']['tmp_name'], $target_file);
+
+    // Insert the new song into the database
+    $stmt = $pdo->prepare('INSERT INTO songs (album_id, name, author, song_file) VALUES (?, ?, ?, ?)');
+    $stmt->execute([$album_id, $name, $author, $songFile]);
+
+    header('Location: dashboard.php');
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Song</title>
+</head>
+<body>
+    <h2>Create New Song</h2>
+    <form action="create_song.php" method="POST" enctype="multipart/form-data">
+        <label for="album">Select Album</label>
+        <select name="album_id" id="album" required>
+            <?php foreach ($albums as $album): ?>
+                <option value="<?php echo htmlspecialchars($album['id']); ?>">
+                    <?php echo htmlspecialchars($album['name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <label for="name">Song Name</label>
+        <input type="text" name="name" id="name" placeholder="Song Name" required>
+
+        <label for="author">Author</label>
+        <input type="text" name="author" id="author" placeholder="Author" required>
+
+        <label for="song_file">Upload Song File (MP3)</label>
+        <input type="file" name="song_file" id="song_file" accept="audio/mpeg" required>
+
+        <button type="submit">Create Song</button>
+    </form>
+</body>
+</html>
